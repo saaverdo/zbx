@@ -1,0 +1,6 @@
+---
+# handlers file for roles/zabbix_agent
+- name: reload zabbix-agent
+  systemd:
+    name: zabbix-agent
+    state: reloaded

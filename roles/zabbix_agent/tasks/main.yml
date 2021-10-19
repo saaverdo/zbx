@@ -1,0 +1,24 @@
+---
+# tasks file for roles/zabbix_agent
+
+- name: Install EPEL Repo package from standart repo
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install Zabbix repo i.e. https://repo.zabbix.com/zabbix/5.4/rhel/8/x86_64/zabbix-release-5.4-1.el8.noarch.rpm
+  yum:
+    name: "https://repo.zabbix.com/zabbix/{{ zabbix_version }}/rhel/7/x86_64/zabbix-release-{{ zabbix_version }}-1.el{{ os_version }}.noarch.rpm"
+    state: present
+  
+- name: Install zabbix agent
+  yum:
+    name: zabbix-agent
+    state: present
+
+- name: Create zabbix agent config from template
+  template:
+    src: agent.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.d/agent.conf
+  notify:
+    - reload zabbix-agent
